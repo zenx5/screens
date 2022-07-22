@@ -1,0 +1,15 @@
+{
+    "name": "zenx5/slider-cached-image",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Octavio Martinez",
+            "email": "omartinez1618@gmail.com"
+        }
+    ],
+    "require": {
+        "greeflas/php-image-downloader": "dev-master",
+        "guzzlehttp/guzzle": "^7.4"
+    }
+}
