@@ -22,7 +22,7 @@
 <body>
     <div class="slider">
         <?php for($i = 0; $i < $index; $i++ ): ?>
-            <img src="src/slick<?=$i?>.jpg" />
+            <img src="store/slick<?=$i?>.jpg" />
         <?php endfor; ?>
     </div>
     

@@ -4,7 +4,7 @@ require 'vendor/autoload.php';
 
 $url_bank = "https://loto.kavavdigital.com/wp-json/wp/v2/media";
 
-$total_images = count(glob('src/{*.jpg}',GLOB_BRACE)) | 0; 
+$total_images = count(glob('store/{*.jpg}',GLOB_BRACE)) | 0; 
 
 try{
     $client = new \GuzzleHttp\Client();
@@ -18,13 +18,13 @@ try{
     $index = 0;
     foreach($response as $media) {
         $url = $media->source_url;
-        $downloader->download($url, 'src', 'slick'.$index.'.jpg');
+        $downloader->download($url, 'store', 'slick'.$index.'.jpg');
         $index += 1;
     }
 
     if( $total_images > $index ){
         for( $i = $index; $i <= $total_images-1; $i++ ) {
-            unlink("src/slick".$i.".jpg");
+            unlink("store/slick".$i.".jpg");
         }
     }
 
