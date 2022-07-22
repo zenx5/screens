@@ -4,7 +4,7 @@ services:
     image: webdevops/php-apache-dev:8.0
     container_name: screens2
     restart: "no"
-    user: application
+    user: root
     environment:
       - WEB_ALIAS_DOMAIN=screen.loc
       - WEB_DOCUMENT_ROOT=/app
