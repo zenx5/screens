@@ -71,12 +71,12 @@
             })
 
             fetch('upload.php')
-                .then( response => response.json() )
-                .then( json => {
-                    sessionStorage.setItem('slicks_data', JSON.stringify(json))
-                    updateSlick( json )
-                    //$('.slider').slick('removeSlick', 0)
-                } )
+                .then( response => console.log(response) )
+                // .then( json => {
+                //     sessionStorage.setItem('slicks_data', JSON.stringify(json))
+                //     updateSlick( json )
+                //     //$('.slider').slick('removeSlick', 0)
+                // } )
 
 
         });
