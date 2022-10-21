@@ -13,14 +13,17 @@ try{
     $client = new \GuzzleHttp\Client();
     $request = new \GuzzleHttp\Psr7\Request('GET', "https://loto.kavavdigital.com/wp-json/wp/v2/media");
     $promise = $client->sendAsync($request)->then(function ($response) {
-        $total_images = count(glob('store/{*.jpg}',GLOB_BRACE)) | 0;
+        echo 'I completed! ' . $response->getBody();
+        // $total_images = count(glob('store/{*.jpg}',GLOB_BRACE)) | 0;
 
+        return;
         $response =  json_decode( $response->getBody() );
+
 
         $downloader = new \greeflas\tools\ImageDownloader([
             'class' => \greeflas\tools\validators\FakeValidator::class
         ]);
-    
+        
         $index = 0;
         foreach($response as $media) {
             $add[] = [
@@ -32,13 +35,17 @@ try{
             $downloader->download($url, 'store', 'slick'.$index.'.jpg');
             $index += 1;
         }
-    
-        if( $total_images > $index ){
-            for( $i = $index; $i <= $total_images-1; $i++ ) {
-                unlink("store/slick".$i.".jpg");
-            }
-        }
-        echo json_encode($response);
+
+        //este pedaso de codigo da un error, muestra que no se encuentra el archivo 
+        // if( $total_images > $index ){
+        //     for( $i = $index; $i <= $total_images-1; $i++ ) {
+        //         unlink("./store/slick".$i.".jpg");
+        //     }
+        // }
+        echo json_encode([
+            "count" => $index, 
+            "slickAdd" => $add
+        ]);
     });
     $promise->wait();
 
@@ -46,7 +53,7 @@ try{
     // $response = $client->get('https://loto.kavavdigital.com/wp-json/wp/v2/media');
     // $response = $client->request('GET', $url_bank);
     // echo json_encode($response);
-    return;
+   
 
 }
 catch(err){
@@ -54,10 +61,7 @@ catch(err){
 }
 
 
-echo json_encode([
-    "count" => $index, 
-    "slickAdd" => $add
-]);
+
 
 
 //include 'webview.php';

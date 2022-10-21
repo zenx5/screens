@@ -33,7 +33,7 @@
     <script>
         const updateSlick = ( data ) => {
             const count = parseInt(sessionStorage.getItem('slick_count')) | 0
-            sessionStorage.getItem('slick_countd', data.count)
+            sessionStorage.getItem('slick_count', data.count)
             for(i = 0; i < count; i++) {
                 $('.slider').slick('slickRemove', i )
             } 
@@ -45,12 +45,19 @@
         let worker = new Worker('check-connection.js')
 
         worker.addEventListener("message", function(event){
-            const data = JSON.parse(event.data);
+            console.log(event)
+            return
+            const data = event.data;
             const currents = JSON.parse( sessionStorage.getItem('slicks_data') )
-            if(( data.count != data.currents )){
-                //updateSlick( data )
-            }
-            
+            sessionStorage.setItem('slicks_data', JSON.stringify(data))
+            updateSlick( data );
+            setTimeout(() => {
+                let datas = {
+                    action: 'getData',
+                    data: data
+                };
+                worker.postMessage(JSON.stringify(datas));
+            }, 10000);
 
         });
 
@@ -63,20 +70,27 @@
                 autoplay: true
             });
 
-            $('.slider').on('afterChange', function(event, slick, currentSlide, nextSlide){
-                if(currentSlide === 0) {
-                    worker.postMessage("");
-                }
+            let data = {
+                action: 'getData',
+                data: null
+            };
+            worker.postMessage(JSON.stringify(data));
 
-            })
 
-            fetch('upload.php')
-                .then( response => console.log(response) )
-                // .then( json => {
-                //     sessionStorage.setItem('slicks_data', JSON.stringify(json))
-                //     updateSlick( json )
-                //     //$('.slider').slick('removeSlick', 0)
-                // } )
+            // $('.slider').on('afterChange', function(event, slick, currentSlide, nextSlide){
+            //     if(currentSlide === 0) {
+            //         worker.postMessage("");
+            //     }
+
+            // })
+
+            // fetch('upload.php')
+            //     .then( response => response.json() )
+            //     .then( json => {
+            //         sessionStorage.setItem('slicks_data', JSON.stringify(json))
+            //         updateSlick( json )
+            //         //$('.slider').slick('removeSlick', 0)
+            //     } )
 
 
         });
